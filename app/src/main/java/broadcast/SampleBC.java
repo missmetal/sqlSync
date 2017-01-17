@@ -28,11 +28,11 @@ public class SampleBC extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         // TODO Auto-generated method stub
         noOfTimes++;
-        Toast.makeText(context, "BC Service Running for " + noOfTimes + " times", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Servicio iniciado " + noOfTimes + " veces", Toast.LENGTH_SHORT).show();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         // Checks if new records are inserted in Remote MySQL DB to proceed with Sync operation
-        RequestHandle post = client.post("http://192.168.2.4:9000/mysqlsqlitesync/getdbrowcount.php", params, new AsyncHttpResponseHandler() {
+        RequestHandle post = client.post("ftp://ftp.xysistemas.com.ar/public_html/testsrv/sqlsync/getdbrowcount.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 System.out.println(responseBody);
@@ -60,11 +60,11 @@ public class SampleBC extends BroadcastReceiver {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 // TODO Auto-generated method stub
                 if (statusCode == 404) {
-                    Toast.makeText(context, "404", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error 404", Toast.LENGTH_SHORT).show();
                 } else if (statusCode == 500) {
-                    Toast.makeText(context, "500", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error 500", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context, "Error occured!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error Inesperado", Toast.LENGTH_SHORT).show();
                 }
 
             }

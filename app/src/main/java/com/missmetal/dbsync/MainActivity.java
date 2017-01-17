@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Get User records from SQLite DB
-        ArrayList<HashMap<String, String>> userList = controller.getAllUsers();
+        ArrayList<HashMap<String, String>> userList = controller.getAllRows();
         // If users exists in SQLite DB
         if (userList.size() != 0) {
             // Set the User Array list in ListView
@@ -100,13 +100,13 @@ public class MainActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         // Show ProgressBar
         prgDialog.show();
-        // Make Http call to getusers.php
-        client.post("http://192.168.2.4:9000/mysqlsqlitesync/getusers.php", params, new AsyncHttpResponseHandler() {
+        // Llama a getdata.php
+        client.post("ftp://ftp.xysistemas.com.ar/public_html/testsrv/sqlsync/getdata.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide ProgressBar
                 prgDialog.hide();
-                // Update SQLite DB with response sent by getusers.php
+                // Update SQLite DB with response sent by getdata.php
                 try {
                     updateSQLite(String.valueOf(responseBody));
                 } catch (JSONException e) {
@@ -133,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateSQLite(String response) throws JSONException {
-        ArrayList<HashMap<String, String>> usersynclist;
-        usersynclist = new ArrayList<HashMap<String, String>>();
+        ArrayList<HashMap<String, String>> usersynclist = new ArrayList<>(); //lista de la respuesta
+
         // Create GSON object
         Gson gson = new GsonBuilder().create();
         try {
-            // Extract JSON array from the response
+            // Extrae el array de json en el response
             JSONArray arr = new JSONArray(response);
             System.out.println(arr.length());
             // If no of array elements is not zero
@@ -147,20 +147,20 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < arr.length(); i++) {
                     // Get JSON object
                     JSONObject obj = (JSONObject) arr.get(i);
-                    System.out.println(obj.get("userId"));
-                    System.out.println(obj.get("userName"));
+                    System.out.println(obj.get("ID"));
+                    System.out.println(obj.get("Estado"));
                     // DB QueryValues Object to insert into SQLite
                     queryValues = new HashMap<String, String>();
                     // Add userID extracted from Object
-                    queryValues.put("userId", obj.get("userId").toString());
+                    queryValues.put("ID", obj.get("ID").toString());
                     // Add userName extracted from Object
-                    queryValues.put("userName", obj.get("userName").toString());
+                    queryValues.put("Estado", obj.get("Estado").toString());
                     // Insert User into SQLite DB
                     controller.insertRow(queryValues);
                     HashMap<String, String> map = new HashMap<String, String>();
                     // Add status for each User in Hashmap
-                    map.put("Id", obj.get("userId").toString());
-                    map.put("status", "1");
+                    map.put("ID", obj.get("ID").toString());
+                    map.put("Estado", "");
                     usersynclist.add(map);
                 }
                 // Inform Remote MySQL DB about the completion of Sync activity by passing Sync status of Users
@@ -179,9 +179,9 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(json);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("syncsts", json);
-        // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://192.168.2.4:9000/mysqlsqlitesync/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+        params.put("ID", json);
+        // Llama al server para updatear los datos de las antenas
+        /*client.post("ftp://ftp.xysistemas.com.ar/public_html/testsrv/sqlsync/updatesyncsts.php", params, new AsyncHttpResponseHandler() { //todo : falta armar los metodos de update en php
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(getApplicationContext(), "MySQL DB has been informed about Sync activity", Toast.LENGTH_LONG).show();
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
             }
-        });
+        });*/
     }
 
     // Reload MainActivity

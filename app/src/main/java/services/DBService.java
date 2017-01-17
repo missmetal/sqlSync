@@ -45,8 +45,8 @@ public class DBService extends Service {
         // Sets an ID for the notification, so it can be updated
         int notifyID = 9001;
         mNotifyBuilder = new NotificationCompat.Builder(this)
-                .setContentTitle("Alert")
-                .setContentText("You've received new messages.")
+                .setContentTitle("DBSync")
+                .setContentText("Nuevo mensaje")
                 .setSmallIcon(R.drawable.ic_launcher);
         // Set pending intent
         mNotifyBuilder.setContentIntent(resultPendingIntent);
@@ -69,7 +69,7 @@ public class DBService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Cerrando...", Toast.LENGTH_LONG).show();
 
     }
 }

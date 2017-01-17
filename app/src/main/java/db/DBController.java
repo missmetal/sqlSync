@@ -62,17 +62,17 @@ public class DBController extends SQLiteOpenHelper {
         database.close();
     }
 
-    public ArrayList<HashMap<String, String>> getAllUsers() {
+    public ArrayList<HashMap<String, String>> getAllRows() {
         ArrayList<HashMap<String, String>> usersList;
         usersList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  * FROM users";
+        String selectQuery = "SELECT  * FROM antenas";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("userId", cursor.getString(0));
-                map.put("userName", cursor.getString(1));
+                map.put("id", cursor.getString(0));
+                map.put("estado", cursor.getString(1));
                 usersList.add(map);
             } while (cursor.moveToNext());
         }

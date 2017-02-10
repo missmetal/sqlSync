@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // DB Class to perform DB related operations
-    DBController controller = new DBController(this, "",null,1);
+    DBController controller = new DBController(this, "lean",null,1);
     // Progress Dialog Object
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         if (userList.size() != 0) {
             // Set the User Array list in ListView
             ListAdapter adapter = new SimpleAdapter(MainActivity.this, userList, R.layout.list_view, new String[] {
-                    "userId", "userName" }, new int[] { R.id.userId, R.id.userName });
+                    "ID", "Estado" }, new int[] { R.id.ID, R.id.estado });
             ListView myList = (ListView) findViewById(android.R.id.list);
             myList.setAdapter(adapter);
         }

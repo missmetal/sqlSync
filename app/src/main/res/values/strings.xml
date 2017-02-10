@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DBSync</string>
+    <string name="add_antenna">Agregar</string>
+
 </resources>

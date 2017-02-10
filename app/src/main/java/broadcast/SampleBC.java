@@ -3,6 +3,7 @@ package broadcast;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -52,6 +53,7 @@ public class SampleBC extends BroadcastReceiver {
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
+                    Log.i("Error", e.toString());
                     e.printStackTrace();
                 }
             }

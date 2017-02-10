@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.loopj.android.http.AsyncHttpClient;
@@ -31,6 +32,9 @@ import java.util.HashMap;
 import broadcast.SampleBC;
 import cz.msebera.android.httpclient.Header;
 import db.DBController;
+import utils.Constants;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     // Progress Dialog Object
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }
         // Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
-        prgDialog.setMessage("Transferring Data from Remote MySQL DB and Syncing SQLite. Please wait...");
+        prgDialog.setMessage("Sincronizando...");
         prgDialog.setCancelable(false);
         // BroadCase Receiver Intent Object
         Intent alarmIntent = new Intent(getApplicationContext(), SampleBC.class);
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Method to Sync MySQL to SQLite DB
     public void syncSQLiteMySQLDB() {
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
         // Create AsycHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         // Http Request Params Object
@@ -101,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         // Show ProgressBar
         prgDialog.show();
         // Llama a getdata.php
-        client.post("ftp://ftp.xysistemas.com.ar/public_html/testsrv/sqlsync/getdata.php", params, new AsyncHttpResponseHandler() {
+        client.post(Constants.MAIN_URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide ProgressBar

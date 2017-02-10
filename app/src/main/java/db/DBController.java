@@ -5,9 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.SyncStateContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import utils.Constants;
 
 /**
  * Created by Miss Metal on 27/11/2016.
@@ -21,7 +24,7 @@ public class DBController extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String query;
-        query = "CREATE TABLE antenas ( Sector varchar(200)," +
+        query = "CREATE TABLE "+ Constants.TABLE_ANTENAS_NAME +"( Sector varchar(200)," +
                 "  Estado varchar(200)," +
                 "  Fecha_Estado date," +
                 "  Tipo_Instalacion varchar(200)," +
@@ -39,7 +42,7 @@ public class DBController extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         String query;
-        query = "DROP TABLE IF EXISTS antenas";
+        query = "DROP TABLE IF EXISTS " + Constants.TABLE_ANTENAS_NAME;
         sqLiteDatabase.execSQL(query);
         onCreate(sqLiteDatabase);
     }
@@ -58,14 +61,14 @@ public class DBController extends SQLiteOpenHelper {
         values.put("tiltelectrico", queryValues.get("tiltelectrico"));
         values.put("tiltelectricoremoto", queryValues.get("tiltelectricoremoto"));
         values.put("observaciones", queryValues.get("observaciones"));
-        database.insert("antenas", null, values);
+        database.insert(Constants.TABLE_ANTENAS_NAME, null, values);
         database.close();
     }
 
     public ArrayList<HashMap<String, String>> getAllRows() {
-        ArrayList<HashMap<String, String>> usersList;
-        usersList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  * FROM antenas";
+        ArrayList<HashMap<String, String>> antenasLista;
+        antenasLista = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + Constants.TABLE_ANTENAS_NAME;
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -73,11 +76,11 @@ public class DBController extends SQLiteOpenHelper {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("id", cursor.getString(0));
                 map.put("estado", cursor.getString(1));
-                usersList.add(map);
+                antenasLista.add(map);
             } while (cursor.moveToNext());
         }
         database.close();
-        return usersList;
+        return antenasLista;
     }
 
 }

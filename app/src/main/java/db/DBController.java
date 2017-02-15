@@ -24,18 +24,19 @@ public class DBController extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String query;
-        query = "CREATE TABLE "+ Constants.TABLE_ANTENAS_NAME +"( Sector varchar(200)," +
-                "  Estado varchar(200)," +
-                "  Fecha_Estado date," +
-                "  Tipo_Instalacion varchar(200)," +
-                "  Azimut int(30)," +
-                "  Modelo_Antena varchar(200)," +
-                "  Altura int(30)," +
-                "  Tilt_Mecanico int(30)," +
-                "  Til_Electrico int(30)," +
-                "  Tilt_Electrico_Remoto varchar(200)," +
-                "  Observaciones varchar(200)" +
-                "ID int(30)";
+        query = "CREATE TABLE "+ Constants.TABLE_ANTENAS_NAME +
+                "(" + Constants.COLUMN_SECTOR +" TEXT," +
+                Constants.COLUMN_ESTADO + "  TEXT," +
+                Constants.COLUMN_FECHA_ESTADO +"  DATE," +
+                Constants.COLUMN_TIPO_INSTALACION +"  TEXT," +
+                Constants.COLUMN_AZIMUT +"  INTEGER," +
+                Constants.COLUMN_MODELO_ANTENA +"  TEXT," +
+                Constants.COLUMN_ALTURA +" INTEGER," +
+                Constants.COLUMN_TILT_MECANICO +" INTEGER," +
+                Constants.COLUMN_TILT_ELECTRICO +"  INTEGER," +
+                Constants.COLUMN_TILT_ELECTRICO_REMOTO +"  TEXT," +
+                Constants.COLUMN_OBSERVACIONES +"  TEXT," +
+                Constants.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT)";
         sqLiteDatabase.execSQL(query);
     }
 
